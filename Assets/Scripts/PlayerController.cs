@@ -4,25 +4,32 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour 
-{
+{   
+    //player
     private Rigidbody rb;
+    //essentially speed, higher = faster, lower = slower
     public float speedController = 10;
+
     private int score;
     public Text scoreText;
 
     void Start()
     {
+        //rb is essentially the player
         rb = GetComponent<Rigidbody>();
 
+        //setting up the pick up objects
         initialize();
     }
 
+    //different prefabs
     public GameObject cubePreFab;
     public GameObject capsulePreFab;
     public GameObject cylinderPreFab;
 
     void initialize()
-    {
+    {   
+        //Game object setup
         Instantiate(cubePreFab, new Vector3(-3, 1, -3), Quaternion.identity);
         Instantiate(cubePreFab, new Vector3(3, 1, -3), Quaternion.identity);
         Instantiate(cubePreFab, new Vector3(-3, 1, 3), Quaternion.identity);
@@ -34,12 +41,14 @@ public class PlayerController : MonoBehaviour
         Instantiate(cylinderPreFab, new Vector3(-5, 1, 0), Quaternion.identity);
         Instantiate(cylinderPreFab, new Vector3(5, 1, 0), Quaternion.identity);
 
+        //score text setup
         score = 0;
         scoreText.text = "Score: " + score;
     }
 
     void FixedUpdate()
     {
+        //adding forces to player off inputs from wasd or arrow keys
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -50,6 +59,7 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider obj)
     {
+        //checking what player collided with, different collisions warrant different scores
         if (obj.gameObject.tag == "Capsule" || obj.gameObject.tag == "Cylinder" || obj.gameObject.tag == "Cube")
         {
             Destroy(obj.gameObject);
@@ -66,7 +76,8 @@ public class PlayerController : MonoBehaviour
             }
 
             scoreText.text = "Score: " + score;
-
+            
+            //reset if all pickups are picked up, which is also when score = 14
             if (score == 14)
             {
                 reset();
@@ -75,7 +86,8 @@ public class PlayerController : MonoBehaviour
     }
 
     void reset()
-    {
+    {   
+        //Invoke waits for given time in seconds, then calls method
         Invoke("initialize", 3);
     }
 }

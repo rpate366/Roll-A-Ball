@@ -5,7 +5,7 @@ using UnityEngine;
 public class RotationScript : MonoBehaviour
 {
 
-    // Update is called once per frame
+    // rotation script, updates once per frame
     void Update()
     {
         transform.Rotate(new Vector3(30, 30, 30) * Time.deltaTime);
